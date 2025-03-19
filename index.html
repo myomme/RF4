@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>어종 정보 조회</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #fish-info { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background: #f9f9f9; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h2>어종 정보 조회</h2>
+    
+    <label for="fish-select">어종 선택:</label>
+    <select id="fish-select" onchange="updateFishInfo()">
+        <option value="">어종을 선택하세요</option>
+    </select>
+
+    <div id="fish-info">어종을 선택하면 정보가 표시됩니다.</div>
+
+    <script>
+        // JSON 대신 JavaScript 객체로 데이터 저장
+        let fishData = {
+            "개구리": [
+                { "수량": 1, "최소 무게": 30, "최소 가격": 1.83, "최대 가격": 2.12 },
+                { "수량": 1, "최소 무게": 64, "최소 가격": 1.88, "최대 가격": 2.02 }
+            ],
+            "거울 잉어": [
+                { "수량": 1, "최소 무게": 4000, "최소 가격": 19.82, "최대 가격": 32.26 },
+                { "수량": 1, "최소 무게": 14499, "최소 가격": 61.85, "최대 가격": 82.35 },
+                { "수량": 1, "최소 무게": 32499, "최소 가격": 322.63, "최대 가격": 348.26 }
+            ],
+            "딩스 거울 잉어": [
+                { "수량": 1, "최소 무게": 35000, "최소 가격": 794.71, "최대 가격": 794.71 },
+                { "수량": 1, "최소 무게": 39999, "최소 가격": 903.45, "최대 가격": 937.58 },
+                { "수량": 1, "최소 무게": 40000, "최소 가격": "자료 수집 중", "최대 가격": "자료 수집 중" }
+            ],
+            "로치": [
+                { "수량": 6, "최소 무게": 50, "최소 가격": 13.79, "최대 가격": 16.53 },
+                { "수량": 6, "최소 무게": 174, "최소 가격": 13.76, "최대 가격": 14.87 },
+                { "수량": 7, "최소 무게": 300, "최소 가격": 30.28, "최대 가격": 39.38 }
+            ],
+            "파이크": [
+                { "수량": 2, "최소 무게": 2000, "최소 가격": 86.43, "최대 가격": 117.55 },
+                { "수량": 2, "최소 무게": 6999, "최소 가격": 186.95, "최대 가격": 266.25 }
+            ]
+        };
+
+        // 드롭다운 메뉴에 어종 추가
+        window.onload = function() {
+            let selectBox = document.getElementById("fish-select");
+
+            Object.keys(fishData).forEach(fish => {
+                let option = document.createElement("option");
+                option.value = fish;
+                option.textContent = fish;
+                selectBox.appendChild(option);
+            });
+        };
+
+        // 어종 선택 시 정보 표시
+        function updateFishInfo() {
+            let selectBox = document.getElementById("fish-select");
+            let selectedFish = selectBox.value;
+            let infoBox = document.getElementById("fish-info");
+
+            if (selectedFish && fishData[selectedFish]) {
+                let dataList = fishData[selectedFish];
+
+                let infoHTML = `<h3>${selectedFish}</h3>
+                <table>
+                    <tr>
+                        <th>수량</th>
+                        <th>최소 무게 (g)</th>
+                        <th>최소 가격 (실버)</th>
+                        <th>최대 가격 (실버)</th>
+                    </tr>`;
+
+                dataList.forEach(data => {
+                    infoHTML += `<tr>
+                        <td>${data["수량"]}</td>
+                        <td>${data["최소 무게"]}</td>
+                        <td>${data["최소 가격"]}</td>
+                        <td>${data["최대 가격"]}</td>
+                    </tr>`;
+                });
+
+                infoHTML += `</table>`;
+                infoBox.innerHTML = infoHTML;
+            } else {
+                infoBox.innerHTML = "어종을 선택하면 정보가 표시됩니다.";
+            }
+        }
+    </script>
+
+</body>
+</html>
